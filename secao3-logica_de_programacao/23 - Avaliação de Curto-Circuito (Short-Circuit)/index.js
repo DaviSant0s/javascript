@@ -1,0 +1,3 @@
+function falaOi() {
+    return 'oi';
+}
