@@ -1,10 +1,11 @@
 {
-  "name": "secao9-javascript_tooling_e_es6_modules-modulos",
+  "name": "aula1-babel_can_i_use",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "babel": "babel main.js -o bundle.js --presets=@babel/env -w"
   },
   "keywords": [],
   "author": "",
