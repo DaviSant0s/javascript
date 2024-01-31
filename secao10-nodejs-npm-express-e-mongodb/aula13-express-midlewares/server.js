@@ -12,6 +12,7 @@ app.set('view engine', 'ejs');
 
 // nossos próprios middlewares
 app.use(middlewareGlobal);
+
 app.use(routes);
 
 app.listen(3000, () => {
