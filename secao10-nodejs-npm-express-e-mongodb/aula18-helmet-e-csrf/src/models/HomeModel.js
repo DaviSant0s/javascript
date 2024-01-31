@@ -6,6 +6,7 @@ const HomeSchema = new mongoose.Schema({
     descricao: String
 });
 
+// O trabalho do model é trabalhar com dados
 const HomeModel = mongoose.model('Home', HomeSchema);
 
 class Home {
