@@ -4,11 +4,10 @@ exports.middlewareGlobal = (req, res, next) => {
 }
 
 exports.checkCsrfError = (err, req, res, next) => {
-    // checando se tem algum erro de csrf
-    if (err && err.code === 'EBADCSRFTOKEN'){
-        // você pode renderizar uma página 404 aqui
-        return res.render('404');
-    }
+    // checando se tem algum erro
+    if (err) res.render('404');
+
+    next();
 }
 
 // esse eu quero passar pra próxima função
