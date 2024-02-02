@@ -8,9 +8,8 @@ exports.register = async function(req, res){
     // instanciando um objeto da classe
     const login = new Login(req.body);
 
-    // Esse médodo vai vaidar os dados
-
     try {
+        // Esse médodo vai vaidar os dados
         await login.register();
 
         if(login.errors.length > 0) {

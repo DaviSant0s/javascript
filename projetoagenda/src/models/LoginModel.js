@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
+const bcryptjs = require('bcryptjs');
 
 // Schema é a modelagem dos nossos dados
 const LoginSchema = new mongoose.Schema({
@@ -20,19 +21,41 @@ class Login {
     }
 
     async register() {
+
+        // Daz as valições das informações
         this.valida();
+        if (this.errors.length > 0) {
+            return;
+        }
+
+        // Se deu tudo certo nas validações, também vamos verificar se o usuário já existe
+        await this.userExists();
+        
+        // Daí verificamos mais uma vez se existe algum erro, se sim colocamos no array de erros e esse erro vai aparecer na tela
         if (this.errors.length > 0) {
             return;
         }
 
         /* Se passar pra cá registra o usuário */
 
-        // Aqui ela tá registrando os dados na base de dados e retornando os dados para o user.
+        // "criptografando a senha"
+        const salt = bcryptjs.genSaltSync();
+        this.body.password = bcryptjs.hashSync(this.body.password, salt);
 
+        // Aqui ela tá registrando os dados na base de dados e retornando os dados para o user.
         try {
             this.user = await LoginModel.create(this.body);
         } catch (e) {
             console.log(e);
+        }
+    }
+
+    async userExists() {
+        // Isso vai retornar o usuário ou null
+        const user = await LoginModel.findOne({ email: this.body.email });
+
+        if (user) {
+            return this.errors.push('Usuário já existe!');
         }
     }
 
