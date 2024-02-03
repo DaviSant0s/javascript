@@ -20,6 +20,32 @@ class Login {
         this.user = null;
     }
 
+    async login() {
+        // Daz as valições das informações
+        this.valida();
+        if (this.errors.length > 0) {
+            return;
+        }
+
+        // verifica se tem esse email no banco de dados
+        this.user = await LoginModel.findOne({ email: this.body.email });
+
+        // Se não existir esse email na base de dados retorna um erro
+        if(!this.user) {
+            this.errors.push('Usuário não existe');
+            return;
+        }
+
+        // Verifica a senha é igual ao que tá na base de dados
+        // Se não existir, retorna um erro e seta this.user como null novamente
+        if(!bcryptjs.compareSync(this.body.password, this.user.password)) {
+            this.errors.push('Senha inválida');
+            this.user = null;
+            return;
+        }
+
+    }
+
     async register() {
 
         // Daz as valições das informações
@@ -43,11 +69,9 @@ class Login {
         this.body.password = bcryptjs.hashSync(this.body.password, salt);
 
         // Aqui ela tá registrando os dados na base de dados e retornando os dados para o user.
-        try {
-            this.user = await LoginModel.create(this.body);
-        } catch (e) {
-            console.log(e);
-        }
+
+        this.user = await LoginModel.create(this.body);
+        
     }
 
     async userExists() {
