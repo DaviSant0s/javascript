@@ -72,8 +72,18 @@ Contato.prototype.cleanUp = function() {
         email: this.body.email,
         telefone: this.body.telefone,
     }
+}
 
+Contato.prototype.edit = async function(id) {
+    if(typeof id !== 'string') return;
 
+    this.valida();
+    if (this.errors.length > 0) {
+        return;
+    }
+
+    // o significa que é pra retornar os dados atualizados e não os antigos
+    this.contato = await ContatoModel.findByIdAndUpdate(id, this.body, { new: true});
 }
 
 module.exports = Contato;
